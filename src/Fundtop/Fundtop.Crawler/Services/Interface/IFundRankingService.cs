@@ -1,4 +1,6 @@
-﻿namespace Fundtop.Crawler.Services.Interface
+﻿using Fundtop.Models.Drawler;
+
+namespace Fundtop.Crawler.Services.Interface
 {
     public interface IFundRankingService
     {

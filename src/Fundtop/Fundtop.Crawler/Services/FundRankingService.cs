@@ -1,5 +1,6 @@
 ﻿using Fundtop.Crawler.Services.Interface;
-using System.Text.Json;
+using Fundtop.Models.Drawler;
+using Fundtop.Repositories.Drawler.Interface;
 using System.Text.RegularExpressions;
 
 namespace Fundtop.Crawler.Services
@@ -8,11 +9,13 @@ namespace Fundtop.Crawler.Services
     {
         private readonly ILogger<Worker> _logger;
         private readonly HttpClient _httpClient;
+        private readonly IFundRankingRepository _fundRankingRepository;
 
-        public FundRankingService(ILogger<Worker> logger, HttpClient httpClient)
+        public FundRankingService(ILogger<Worker> logger, HttpClient httpClient, IFundRankingRepository fundRankingRepository)
         {
             _logger = logger;
             _httpClient = httpClient;
+            _fundRankingRepository = fundRankingRepository;
         }
 
         public async Task FundRankingAsync(CrawlerConfig config)
@@ -24,9 +27,7 @@ namespace Fundtop.Crawler.Services
                 allFunds.AddRange(funds);
             }
 
-            // Save parsed data to JSON file
-            var json = JsonSerializer.Serialize(allFunds, new JsonSerializerOptions { WriteIndented = true });
-            await File.WriteAllTextAsync($"{AppContext.BaseDirectory}/fund.json", json);
+            await _fundRankingRepository.Insert(allFunds);
         }
 
         public async Task<List<FundRankingModel>> GetFundRankingAsync(string url, int pageIndex, int pageSize)
@@ -86,7 +87,7 @@ namespace Fundtop.Crawler.Services
                         {
                             FundCode = data[0],
                             FundShortName = data[1],
-                            Date = data[3],
+                            Date = string.IsNullOrEmpty(data[3]) ? null : Convert.ToDateTime(data[3]),
                             NetAssetValue = string.IsNullOrEmpty(data[4]) ? 0 : Convert.ToDecimal(data[4]),
                             CumulativeNetAssetValue = string.IsNullOrEmpty(data[5]) ? 0 : Convert.ToDecimal(data[5]),
                             DailyGrowthRate = string.IsNullOrEmpty(data[6]) ? 0 : Convert.ToDecimal(data[6]),
@@ -99,7 +100,7 @@ namespace Fundtop.Crawler.Services
                             ThreeYear = string.IsNullOrEmpty(data[13]) ? 0 : Convert.ToDecimal(data[13]),
                             YearToDate = string.IsNullOrEmpty(data[14]) ? 0 : Convert.ToDecimal(data[14]),
                             SinceInception = string.IsNullOrEmpty(data[15]) ? 0 : Convert.ToDecimal(data[15]),
-                            InceptionDate = data[16],
+                            InceptionDate = string.IsNullOrEmpty(data[16]) ? null : Convert.ToDateTime(data[16]),
                             TransactionFee = data[20]
                         };
                         funds.Add(fundData);
@@ -113,26 +114,5 @@ namespace Fundtop.Crawler.Services
 
             return funds;
         }
-    }
-
-    public class FundRankingModel
-    {
-        public string FundCode { get; set; }
-        public string FundShortName { get; set; }
-        public string Date { get; set; }
-        public decimal NetAssetValue { get; set; }
-        public decimal CumulativeNetAssetValue { get; set; }
-        public decimal DailyGrowthRate { get; set; }
-        public decimal OneWeek { get; set; }
-        public decimal OneMonth { get; set; }
-        public decimal ThreeMonth { get; set; }
-        public decimal SixMonth { get; set; }
-        public decimal OneYear { get; set; }
-        public decimal TwoYear { get; set; }
-        public decimal ThreeYear { get; set; }
-        public decimal YearToDate { get; set; }
-        public decimal SinceInception { get; set; }
-        public string InceptionDate { get; set; }
-        public string TransactionFee { get; set; }
     }
 }
