@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Fundtop.Core\Fundtop.Core.csproj" />
     <ProjectReference Include="..\Fundtop.Models\Fundtop.Models.csproj" />
   </ItemGroup>
 
