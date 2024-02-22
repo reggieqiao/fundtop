@@ -1,0 +1,260 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">China</h3>
+        </div>
+        <div class="card-body border-bottom py-3">
+            <div class="d-flex">
+                <div class="text-secondary">
+                    Search:
+                    <div class="ms-2 d-inline-block">
+                        <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="datatable" class="table card-table table-vcenter text-nowrap datatable">
+            </table>
+        </div>
+        <div class="card-footer d-flex align-items-center">
+            <p id="showing" class="m-0 text-secondary"></p>
+            <ul id="pagination" class="pagination m-0 ms-auto">
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTable();
+        });
+
+        function loadTable(page = 1) {
+            loading();
+
+            var params = new URLSearchParams({
+                pageIndex: page,
+                pageSize: 100
+            }).toString();
+
+            fetch(`/home/fundlist?${params}`).then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                var columns = [
+                    {
+                        prop: 'fundCode',
+                        label: 'Code',
+                        tooltip: 'Fund Code',
+                        render: function (data) {
+                            return `<span class="text-secondary">${data}</span>`;
+                        }
+                    },
+                    {
+                        prop: 'fundShortName',
+                        label: 'Name',
+                        tooltip: 'Fund Name'
+                    },
+                    {
+                        prop: 'date',
+                        label: 'Date',
+                        tooltip: 'Fund Date',
+                        render: function (data) {
+                            return new Date(data).toLocaleDateString();
+                        }
+                    },
+                    {
+                        prop: 'netAssetValue',
+                        label: 'NAV',
+                        tooltip: 'Net Asset Value',
+                        render: function (data) {
+                            var color = data < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${data}</span>`;
+                        }
+                    },
+                    {
+                        prop: 'cumulativeNetAssetValue',
+                        label: 'CNAV',
+                        tooltip: 'Cumulative Net Asset Value',
+                        render: function (data) {
+                            var color = data < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${data}</span>`;
+                        }
+                    },
+                    {
+                        prop: 'dailyGrowthRate',
+                        label: 'DGR',
+                        tooltip: 'Daily Growth Rate',
+                        render: function (data) {
+                            var color = data < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${data.toFixed(2)}%</span>`;
+                        }
+                    },
+                    {
+                        prop: 'oneWeek',
+                        label: '1 Week',
+                        tooltip: 'One Week',
+                        render: function (data) {
+                            var color = data < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${data.toFixed(2)}%</span>`;
+                        }
+                    },
+                    {
+                        prop: 'transactionFee',
+                        label: 'Transaction Fee'
+                    }
+                ];
+                data.data.pageIndex = page;
+                bindTable(data.data, columns);
+                bindPagination(data.data);
+            });
+        }
+
+        function loading() {
+            var table = document.querySelector('#datatable');
+
+            // Clear old pagination links
+            table.innerHTML = '';
+
+            var tbody = document.createElement('tbody');
+            var tr = document.createElement('tr');
+            var td = document.createElement('td');
+            var div = document.createElement('div');
+            td.setAttribute('class', 'py-8 d-flex justify-content-center align-items-center flex-wrap');
+            div.setAttribute('class', 'spinner-border');
+            td.appendChild(div);
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+            table.appendChild(tbody);
+        }
+
+        function bindTable(data, columns) {
+            var items = data.items;
+            var table = document.querySelector('#datatable');
+
+            // Clear old pagination links
+            table.innerHTML = '';
+
+            // Dynamic generation of table thead
+            var thead = document.createElement('thead');
+            var tr = document.createElement('tr');
+            columns.forEach(function (column) {
+                var th = document.createElement('th');
+                var span = document.createElement('span');
+                if (column.tooltip) {
+                    span.setAttribute('data-bs-toggle', 'tooltip');
+                    span.setAttribute('data-bs-placement', 'top');
+                    span.setAttribute('title', column.tooltip);
+                }
+                span.textContent = column.label;
+                th.appendChild(span);
+                tr.appendChild(th);
+            });
+            thead.appendChild(tr);
+            table.appendChild(thead);
+
+            // Dynamic generation of table tbody
+            var tbody = document.createElement('tbody');
+            items.forEach(function (item) {
+                var tr = document.createElement('tr');
+                columns.forEach(function (column) {
+                    var td = document.createElement('td');
+                    var value = item[column.prop];
+                    if (column.render && typeof column.render === 'function') {
+                        td.innerHTML = column.render(value);
+                    } else {
+                        td.textContent = value;
+                    }
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+
+            // Dynamic register tooltip event
+            [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]')).forEach(function (tooltipTrigger) {
+                new bootstrap.Tooltip(tooltipTrigger);
+            });
+        }
+
+        function bindPagination(data) {
+            var showing = document.querySelector('#showing');
+            var pagination = document.querySelector('#pagination');
+            var currentPage = data.pageIndex;
+            var totalPages = data.totalPages;
+
+            // Show paging step size
+            var startIndex = ((currentPage - 1) * data.pageSize) + 1;
+            var endIndex = startIndex + data.pageSize - 1;
+            if (endIndex > data.totalCount) {
+                endIndex = data.totalCount;
+            }
+            showing.innerHTML = `Showing <span>${startIndex}</span> to <span>${endIndex}</span> of <span>${data.totalCount}</span> entries`;
+
+            // Clear old pagination links
+            pagination.innerHTML = '';
+
+            // Add prev button
+            var prevLi = document.createElement('li');
+            prevLi.className = 'page-item ' + (currentPage === 1 ? 'disabled' : '');
+            var prevLink = document.createElement('a');
+            prevLink.className = 'page-link';
+            prevLink.href = 'javascript:void(0);';
+            prevLink.textContent = 'prev';
+            prevLink.onclick = function () {
+                if (currentPage > 1) loadTable(currentPage - 1);
+            };
+            prevLi.appendChild(prevLink);
+            pagination.appendChild(prevLi);
+
+            // Add page number link
+            var pageIndexes = [1]; // Always show first page
+            for (var i = Math.max(1, currentPage - 2); i <= Math.min(currentPage + 2, totalPages); i++) {
+                if (pageIndexes.indexOf(i) === -1) {
+                    pageIndexes.push(i);
+                }
+            }
+            if (pageIndexes[pageIndexes.length - 1] < totalPages) {
+                pageIndexes.push('...'); // Ellipses indicate more page numbers
+                pageIndexes.push(totalPages); // Last page
+            }
+
+            pageIndexes.forEach(function (page) {
+                var li = document.createElement('li');
+                li.className = 'page-item ' + (page === currentPage ? 'active' : '');
+                var link = document.createElement('a');
+                link.className = 'page-link';
+                link.href = 'javascript:void(0);';
+                link.textContent = page;
+                if (page !== '...') {
+                    link.onclick = (function (pageIndex) {
+                        return function () {
+                            loadTable(pageIndex);
+                        };
+                    })(page);
+                }
+                li.appendChild(link);
+                pagination.appendChild(li);
+            });
+
+            // Add next button
+            var nextLi = document.createElement('li');
+            nextLi.className = 'page-item ' + (currentPage === totalPages ? 'disabled' : '');
+            var nextLink = document.createElement('a');
+            nextLink.className = 'page-link';
+            nextLink.href = 'javascript:void(0);';
+            nextLink.textContent = 'next';
+            nextLink.onclick = function () {
+                if (currentPage < totalPages) loadTable(currentPage + 1);
+            };
+            nextLi.appendChild(nextLink);
+            pagination.appendChild(nextLi);
+        }
+    </script>
+}
