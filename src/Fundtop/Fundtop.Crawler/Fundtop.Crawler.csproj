@@ -15,4 +15,8 @@
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fundtop.Repositories\Fundtop.Repositories.csproj" />
+  </ItemGroup>
 </Project>

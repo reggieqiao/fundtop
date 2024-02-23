@@ -20,14 +20,18 @@ namespace Fundtop.Crawler.Services
 
         public async Task FundRankingAsync(CrawlerConfig config)
         {
-            var allFunds = new List<FundRankingModel>();
-            for (int i = 0; i < config.PageCount; i++)
+            var fundsCount = await _fundRankingRepository.GetCount();
+            if (fundsCount == 0)
             {
-                var funds = await GetFundRankingAsync(config.Url, config.PageIndex + i, config.PageSize);
-                allFunds.AddRange(funds);
-            }
+                var allFunds = new List<FundRankingModel>();
+                for (int i = 0; i < config.PageCount; i++)
+                {
+                    var funds = await GetFundRankingAsync(config.Url, config.PageIndex + i, config.PageSize);
+                    allFunds.AddRange(funds);
+                }
 
-            await _fundRankingRepository.Insert(allFunds);
+                await _fundRankingRepository.Insert(allFunds);
+            }
         }
 
         public async Task<List<FundRankingModel>> GetFundRankingAsync(string url, int pageIndex, int pageSize)

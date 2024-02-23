@@ -17,13 +17,24 @@ namespace Fundtop.Repositories.Drawler
             _connection = connection.GetConnection();
         }
 
+        public async Task<int> GetCount()
+        {
+            var result = 0;
+
+            var sql = @"SELECT COUNT(1) count FROM fund_ranking WHERE DATE(created_at)=CURDATE()";
+
+            result = await _connection.QueryFirstAsync<int>(sql);
+
+            return result;
+        }
+
         public async Task<int> Insert(List<FundRankingModel> funds)
         {
             var result = 0;
 
             var sql = @"
-                INSERT INTO fund_ranking (fund_code, fund_shortname, date, net_asset_value, cumulative_net_asset_value, daily_growth_rate, one_week, one_month, three_month, six_month, one_year, two_year, three_year, year_to_date, since_inception, inception_date, transaction_fee)
-                VALUES (@FundCode, @FundShortName, @Date, @NetAssetValue, @CumulativeNetAssetValue, @DailyGrowthRate, @OneWeek, @OneMonth, @ThreeMonth, @SixMonth, @OneYear, @TwoYear, @ThreeYear, @YearToDate, @SinceInception, @InceptionDate, @TransactionFee)";
+                INSERT INTO fund_ranking (fund_code, fund_shortname, date, net_asset_value, cumulative_net_asset_value, daily_growth_rate, one_week, one_month, three_month, six_month, one_year, two_year, three_year, year_to_date, since_inception, inception_date, transaction_fee, created_at)
+                VALUES (@FundCode, @FundShortName, @Date, @NetAssetValue, @CumulativeNetAssetValue, @DailyGrowthRate, @OneWeek, @OneMonth, @ThreeMonth, @SixMonth, @OneYear, @TwoYear, @ThreeYear, @YearToDate, @SinceInception, @InceptionDate, @TransactionFee, now())";
 
             var batchSize = 100;
             for (int i = 0; i < funds.Count(); i += batchSize)
