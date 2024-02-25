@@ -22,8 +22,9 @@ namespace Fundtop.Repositories.Web
         {
             var pageNumber = (model.PageIndex - 1) * model.PageSize;
             var sql = @"
-                SELECT *, COUNT(*) OVER() AS total_count
+                SELECT *, COUNT(1) OVER() AS total_count
                 FROM fund_ranking
+                WHERE DATE(created_at)=(SELECT DATE(MAX(created_at)) FROM fund_ranking)
                 ORDER BY id
                 LIMIT @PageSize OFFSET @PageNumber";
             var result = await _connection.QueryAsync<FundRankingEntity>(sql, new { PageNumber = pageNumber, PageSize = model.PageSize });
