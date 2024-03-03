@@ -1,0 +1,33 @@
+name: Deploy Web
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            cd ~
+            git clone git@github.com:reggieqiao/fundtop.git
+            cd fundtop/src/Fundtop
+
+            # stop and delete existing container
+            sudo docker stop fundtop-web-prod 2>/dev/null || true
+            sudo docker rm fundtop-web-prod 2>/dev/null || true
+
+            # delete existing image
+            sudo docker rmi fundtop-web-prod:latest 2>/dev/null || true
+
+            # build new image
+            sudo docker build -f Fundtop.Web/Dockerfile -t fundtop/web .
+
+            # run container
+            sudo docker run -d --name fundtop-web-prod -v /etc/hosts:/etc/hosts fundtop/web:latest
