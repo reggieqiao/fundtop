@@ -20,14 +20,14 @@ jobs:
             cd fundtop/src/Fundtop
 
             # stop and delete existing container
-            sudo docker stop fundtop-prod 2>/dev/null || true
-            sudo docker rm fundtop-prod 2>/dev/null || true
+            sudo docker stop fundtop/crawler-prod 2>/dev/null || true
+            sudo docker rm fundtop/crawler-prod 2>/dev/null || true
 
             # delete existing image
-            sudo docker rmi fundtop:latest 2>/dev/null || true
+            sudo docker rmi fundtop/crawler-prod:latest 2>/dev/null || true
 
             # build new image
-            sudo docker build -f Fundtop.Crawler/Dockerfile -t fundtop .
+            sudo docker build -f Fundtop.Crawler/Dockerfile -t fundtop/crawler .
 
             # run container
-            sudo docker run -d --name fundtop-prod -v /etc/hosts:/etc/hosts fundtop:latest
+            sudo docker run -d --name fundtop/crawler-prod -v /etc/hosts:/etc/hosts fundtop/crawler:latest
