@@ -17,7 +17,7 @@ jobs:
           script: |
             cd ~
             git clone git@github.com:reggieqiao/fundtop.git
-            cd fundtop/src/Fundtop
+            cd fundtop/src
 
             # stop and delete existing container
             sudo docker stop fundtop-crawler-prod 2>/dev/null || true
