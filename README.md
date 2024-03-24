@@ -7,3 +7,5 @@ Fundtop is an application that displays fund rankings
 
 ## Installation
 Create database table structure, sql file path `fundtop/docs/database/fund_ranking.sql`
+
+It is recommended that the application be deployed in [docker](https://www.docker.com)
