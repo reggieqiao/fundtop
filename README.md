@@ -22,3 +22,16 @@ sudo docker build -f Fundtop.Crawler/Dockerfile -t fundtop/crawler .
 # run container
 sudo docker run -d --name fundtop-crawler -v /etc/hosts:/etc/hosts fundtop/crawler:latest
 ```
+
+### Deploy Fundtop.Web
+```shell
+# clone source code
+git clone git@github.com:reggieqiao/fundtop.git
+cd fundtop/src
+
+# build new image
+sudo docker build -f Fundtop.Web/Dockerfile -t fundtop/web .
+
+# run container
+sudo docker run -d --name fundtop-web-prod -v /etc/hosts:/etc/hosts -p 3080:80 fundtop/web:latest
+```
