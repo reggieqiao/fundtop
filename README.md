@@ -42,7 +42,7 @@ cd fundtop/src
 sudo docker build -f Fundtop.Web/Dockerfile -t fundtop/web .
 
 # run container
-sudo docker run -d --name fundtop-web-prod -v /etc/hosts:/etc/hosts -p 3080:80 fundtop/web:latest
+sudo docker run -d --name fundtop-web -v /etc/hosts:/etc/hosts -p 3080:80 fundtop/web:latest
 ```
 Open up http://localhost:3080 in your browser, and you'll see the default home page being displayed
 
