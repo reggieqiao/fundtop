@@ -15,6 +15,8 @@ namespace Fundtop.Repositories
         {
             _configuration = configuration;
 
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+
             var databaseDefault = _configuration["Database:Default"];
             var databaseConnection = _configuration[$"Database:Connection:{databaseDefault}"];
             switch (databaseDefault.ToUpper())
@@ -23,7 +25,6 @@ namespace Fundtop.Repositories
                     _connection = new MySqlConnection(databaseConnection);
                     break;
                 case "SQLITE":
-                    DefaultTypeMap.MatchNamesWithUnderscores = true;
                     _connection = new SQLiteConnection(databaseConnection);
                     break;
                 default:
