@@ -50,6 +50,12 @@
             loadTable();
         });
 
+        document.getElementById('keywords').addEventListener('keyup', function (event) {
+            if (event.keyCode === 13 || event.key === 'Enter') {
+                loadTable();
+            }
+        });
+
         function loadTable(page = 1) {
             loading();
 
