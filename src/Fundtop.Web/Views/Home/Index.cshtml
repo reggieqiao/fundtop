@@ -154,6 +154,33 @@
                         }
                     },
                     {
+                        prop: 'oneYear',
+                        label: '1 Year',
+                        tooltip: 'One Year',
+                        render: function (data) {
+                            var color = data < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${data.toFixed(2)}%</span>`;
+                        }
+                    },
+                    {
+                        prop: 'twoYear',
+                        label: '2 Year',
+                        tooltip: 'Two Year',
+                        render: function (data) {
+                            var color = data < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${data.toFixed(2)}%</span>`;
+                        }
+                    },
+                    {
+                        prop: 'threeYear',
+                        label: '3 Year',
+                        tooltip: 'Three Year',
+                        render: function (data) {
+                            var color = data < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${data.toFixed(2)}%</span>`;
+                        }
+                    },
+                    {
                         prop: 'transactionFee',
                         label: 'Transaction Fee'
                     }
