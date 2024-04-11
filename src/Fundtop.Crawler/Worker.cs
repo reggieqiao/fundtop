@@ -44,8 +44,8 @@ namespace Fundtop.Crawler
 
                 var trigger = TriggerBuilder.Create()
                     .WithIdentity($"{config.Url}-trigger")
-                    //.WithCronSchedule(config.Cron)
-                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60*10))
+                    .WithCronSchedule(config.Cron)
+                    //.WithSimpleSchedule(x => x.WithIntervalInSeconds(60*10))
                     .Build();
 
                 await scheduler.ScheduleJob(job, trigger);
