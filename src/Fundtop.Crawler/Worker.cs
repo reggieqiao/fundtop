@@ -79,6 +79,7 @@ namespace Fundtop.Crawler
 
     public class CrawlerConfig
     {
+        public bool Enable { get; set; }
         public string Url { get; set; }
         public string Cron { get; set; }
         public int PageIndex { get; set; }
