@@ -32,23 +32,26 @@ namespace Fundtop.Crawler
             // Schedule jobs
             foreach (var config in configs)
             {
-                var job = JobBuilder.Create<CrawlerJob>()
-                    .WithIdentity(config.Url)
-                    .Build();
+                if (config.Enable)
+                {
+                    var job = JobBuilder.Create<CrawlerJob>()
+                                .WithIdentity(config.Url)
+                                .Build();
 
-                // Store CrawlerConfig object in JobDataMap
-                job.JobDataMap["CrawlerConfig"] = config;
+                    // Store CrawlerConfig object in JobDataMap
+                    job.JobDataMap["CrawlerConfig"] = config;
 
-                // Store CrawlerService instance in JobDataMap
-                job.JobDataMap["CrawlerService"] = _crawlerService;
+                    // Store CrawlerService instance in JobDataMap
+                    job.JobDataMap["CrawlerService"] = _crawlerService;
 
-                var trigger = TriggerBuilder.Create()
-                    .WithIdentity($"{config.Url}-trigger")
-                    .WithCronSchedule(config.Cron)
-                    //.WithSimpleSchedule(x => x.WithIntervalInSeconds(60*10))
-                    .Build();
+                    var trigger = TriggerBuilder.Create()
+                        .WithIdentity($"{config.Url}-trigger")
+                        .WithCronSchedule(config.Cron)
+                        //.WithSimpleSchedule(x => x.WithIntervalInSeconds(60*10))
+                        .Build();
 
-                await scheduler.ScheduleJob(job, trigger);
+                    await scheduler.ScheduleJob(job, trigger);
+                }
             }
 
             // Start schedule
