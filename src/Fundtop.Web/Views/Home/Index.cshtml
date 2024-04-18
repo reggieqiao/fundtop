@@ -80,7 +80,10 @@
                     {
                         prop: 'fundShortName',
                         label: 'Name',
-                        tooltip: 'Fund Name'
+                        tooltip: 'Fund Name',
+                        render: function (data) {
+                            return `<span class="text-secondary" title="${data}">${data.substring(0, 6)}</span>`;
+                        }
                     },
                     {
                         prop: 'date',
