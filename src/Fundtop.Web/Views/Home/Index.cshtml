@@ -90,7 +90,7 @@
                         label: 'Date',
                         tooltip: 'Fund Date',
                         render: function (data) {
-                            return new Date(data).toLocaleDateString();
+                            return new Date(data).toLocaleDateString().replace(/\//g, '-');
                         }
                     },
                     {
