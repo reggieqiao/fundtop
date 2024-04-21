@@ -254,7 +254,7 @@
                     var td = document.createElement('td');
                     var value = item[column.prop];
                     if (column.render && typeof column.render === 'function') {
-                        td.innerHTML = column.render(value);
+                        td.innerHTML = column.render(item);
                     } else {
                         td.textContent = value;
                     }
