@@ -73,15 +73,15 @@
                         prop: 'fundCode',
                         label: 'Code',
                         tooltip: 'Fund Code',
-                        render: function (data) {
-                            return `<span class="text-secondary"><a href="https://fund.eastmoney.com/${data}.html" target="_blank">${data}</a></span>`;
+                        render: function (item) {
+                            return `<span class="text-secondary"><a href="https://fund.eastmoney.com/${item.fundCode}.html" target="_blank">${item.fundCode}</a></span>`;
                         }
                     },
                     {
                         prop: 'fundShortName',
                         label: 'Name',
                         tooltip: 'Fund Name',
-                        render: function (data) {
+                        render: function (item) {
                             return `<span class="text-secondary" title="${data}">${data.substring(0, 6)}</span>`;
                         }
                     },
