@@ -82,7 +82,7 @@
                         label: 'Name',
                         tooltip: 'Fund Name',
                         render: function (item) {
-                            return `<span class="text-secondary" title="${data}">${data.substring(0, 6)}</span>`;
+                            return `<span class="text-secondary" title="${item.fundShortName}"><a href="https://fundf10.eastmoney.com/jbgk_${item.fundCode}.html" target="_blank">${item.fundShortName.substring(0, 6)}</a></span>`;
                         }
                     },
                     {
