@@ -89,8 +89,8 @@
                         prop: 'date',
                         label: 'Date',
                         tooltip: 'Fund Date',
-                        render: function (data) {
-                            return new Date(data).toLocaleDateString().replace(/\//g, '-');
+                        render: function (item) {
+                            return new Date(item.date).toLocaleDateString().replace(/\//g, '-');
                         }
                     },
                     {
