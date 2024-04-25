@@ -97,9 +97,9 @@
                         prop: 'netAssetValue',
                         label: 'NAV',
                         tooltip: 'Net Asset Value',
-                        render: function (data) {
-                            var color = data < 0 ? 'text-red' : 'text-green';
-                            return `<span class="${color}">${data}</span>`;
+                        render: function (item) {
+                            var color = item.netAssetValue < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${item.netAssetValue}</span>`;
                         }
                     },
                     {
