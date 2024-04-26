@@ -106,9 +106,9 @@
                         prop: 'cumulativeNetAssetValue',
                         label: 'CNAV',
                         tooltip: 'Cumulative Net Asset Value',
-                        render: function (data) {
-                            var color = data < 0 ? 'text-red' : 'text-green';
-                            return `<span class="${color}">${data}</span>`;
+                        render: function (item) {
+                            var color = item.cumulativeNetAssetValue < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${item.cumulativeNetAssetValue}</span>`;
                         }
                     },
                     {
