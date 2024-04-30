@@ -142,9 +142,9 @@
                         prop: 'threeMonth',
                         label: '3 Month',
                         tooltip: 'Three Month',
-                        render: function (data) {
-                            var color = data < 0 ? 'text-red' : 'text-green';
-                            return `<span class="${color}">${data.toFixed(2)}%</span>`;
+                        render: function (item) {
+                            var color = item.threeMonth < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${item.threeMonth.toFixed(2)}%</span>`;
                         }
                     },
                     {
