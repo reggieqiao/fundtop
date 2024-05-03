@@ -169,9 +169,9 @@
                         prop: 'twoYear',
                         label: '2 Year',
                         tooltip: 'Two Year',
-                        render: function (data) {
-                            var color = data < 0 ? 'text-red' : 'text-green';
-                            return `<span class="${color}">${data.toFixed(2)}%</span>`;
+                        render: function (item) {
+                            var color = item.twoYear < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${item.twoYear.toFixed(2)}%</span>`;
                         }
                     },
                     {
