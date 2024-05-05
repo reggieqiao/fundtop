@@ -187,9 +187,9 @@
                         prop: 'yearToDate',
                         label: 'Year To Date',
                         tooltip: 'Year To Date',
-                        render: function (data) {
-                            var color = data < 0 ? 'text-red' : 'text-green';
-                            return `<span class="${color}">${data.toFixed(2)}%</span>`;
+                        render: function (item) {
+                            var color = item.yearToDate < 0 ? 'text-red' : 'text-green';
+                            return `<span class="${color}">${item.yearToDate.toFixed(2)}%</span>`;
                         }
                     },
                     {
