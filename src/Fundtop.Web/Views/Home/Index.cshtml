@@ -194,7 +194,10 @@
                     },
                     {
                         prop: 'transactionFee',
-                        label: 'Transaction Fee'
+                        label: 'Transaction Fee',
+                        render: function (item) {
+                            return `<span class="text-secondary"><a href="https://fundf10.eastmoney.com/jjfl_${item.fundCode}.html" target="_blank">${item.transactionFee}</a></span>`;
+                        }
                     }
                 ];
                 data.data.pageIndex = page;
