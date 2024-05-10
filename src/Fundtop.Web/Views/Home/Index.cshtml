@@ -135,7 +135,7 @@
                         tooltip: 'One Month',
                         render: function (item) {
                             var color = item.oneMonth < 0 ? 'text-red' : 'text-green';
-                            return `<span class="${color}">${item.oneMonth.toFixed(2)}%</span>`;
+                            return `<span class="${color}">${item.oneMonth.toFixed(2)}%</span>`; 
                         }
                     },
                     {
@@ -149,7 +149,7 @@
                     },
                     {
                         prop: 'sixMonth',
-                        label: '6 Month',
+                        label: '6 M',
                         tooltip: 'Six Month',
                         render: function (item) {
                             var color = item.sixMonth < 0 ? 'text-red' : 'text-green';
