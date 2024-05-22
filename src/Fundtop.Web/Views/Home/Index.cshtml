@@ -98,8 +98,7 @@
                         label: 'NAV',
                         tooltip: 'Net Asset Value',
                         render: function (item) {
-                            var color = item.netAssetValue < 0 ? 'text-red' : 'text-green';
-                            return `<span class="${color}">${item.netAssetValue}</span>`;
+                            return `<strong>${item.netAssetValue}</strong>`;
                         }
                     },
                     {
@@ -107,8 +106,7 @@
                         label: 'CNAV',
                         tooltip: 'Cumulative Net Asset Value',
                         render: function (item) {
-                            var color = item.cumulativeNetAssetValue < 0 ? 'text-red' : 'text-green';
-                            return `<span class="${color}">${item.cumulativeNetAssetValue}</span>`;
+                            return `<strong>${item.cumulativeNetAssetValue}</strong>`;
                         }
                     },
                     {
