@@ -114,7 +114,10 @@
                         label: 'DGR',
                         tooltip: 'Daily Growth Rate',
                         render: function (item) {
-                            var color = item.dailyGrowthRate < 0 ? 'text-red' : 'text-green';
+                            if (item.dailyGrowthRate === 0) {
+                                return `<span>--</span>`;
+                            }
+                            var color = item.dailyGrowthRate < 0 ? 'text-green' : 'text-red';
                             return `<span class="${color}">${item.dailyGrowthRate.toFixed(2)}%</span>`;
                         }
                     },
