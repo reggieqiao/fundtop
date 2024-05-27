@@ -162,7 +162,10 @@
                         label: '6M',
                         tooltip: 'Six Month',
                         render: function (item) {
-                            var color = item.sixMonth < 0 ? 'text-red' : 'text-green';
+                            if (item.sixMonth === 0) {
+                                return `<span>--</span>`;
+                            }
+                            var color = item.sixMonth < 0 ? 'text-green' : 'text-red';
                             return `<span class="${color}">${item.sixMonth.toFixed(2)}%</span>`;
                         }
                     },
