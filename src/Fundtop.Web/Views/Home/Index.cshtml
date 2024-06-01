@@ -280,6 +280,9 @@
                 var tr = document.createElement('tr');
                 columns.forEach(function (column) {
                     var td = document.createElement('td');
+                    if (column.class) {
+                        td.setAttribute('class', column.class);
+                    }
                     var value = item[column.prop];
                     if (column.render && typeof column.render === 'function') {
                         td.innerHTML = column.render(item);
